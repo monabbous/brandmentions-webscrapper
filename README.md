@@ -16,5 +16,5 @@ and it will output the result in json format in `results` directory.
 for more information just run the command
 
 ```cli
-    node app.js --help
+node app.js --help
 ```

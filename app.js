@@ -10,6 +10,7 @@ const timeRangeSelector = '.timerange.search-items'
 const timeSelector = '.item[title="Last Month"]';
 const fse = require('fs-extra');
 const path = require('path');
+const { head } = require('request-promise');
 
 process.stdout.clearScreenDown();
 
@@ -57,8 +58,14 @@ const saveJSON = (filePath, data) => {
 }
 
 const saveCSV= (filePath, data) => {
-
-    return fse.outputFile(filePath, data.reduce((pre, d) => pre + Object.values(d).join(',') + '\n', ''));
+    let headers = '';
+    if (data[0]) {
+        headers = Object.keys(data[0]).join(',') + '\n';
+    }
+    return fse.outputFile(filePath, data.reduce((pre, d) => {
+        d.images = d.images.join()
+        return pre + Object.values(d).join(',').replace('\n', '\\n') + '\n';
+    }, headers));
 }
 
 const init = async () => {
